@@ -1,21 +1,8 @@
 #include "matrix.h"
 #include <stdlib.h>
-#include <string.h>
 
 double *buf = NULL;
 int buf_size = 0;
-
-enum
-{
-    BUF_INIT_SIZE = 16
-};
-
-enum GaussFlags
-{
-    GF_MAIN_SEARCH = 0x1u, // whether to search for main element in a line
-    GF_CALC_DET = 0x2u, // whether to calculate determinant
-    GF_CALC_INVERSE = 0x4u // whether to calculate inverse matrix
-};
 
 void
 matlib_init(void)
@@ -72,38 +59,6 @@ matrix_unit(Matrix *matrix)
         for (int j = 0; j < n; ++j) {
             matrix->arr[i * n + j] = (i == j) ? 1.0 : 0.0;
         }
-    }
-}
-
-void
-matrix_swap_lines(Matrix *matrix, int line1, int line2)
-{
-    double *l1_start = matrix->arr + line1 * matrix->n;
-    double *l2_start = matrix->arr + line2 * matrix->n;
-    memcpy(buf, l1_start, matrix->n * sizeof(*buf));
-    memcpy(l1_start, l2_start, matrix->n * sizeof(*l1_start));
-    memcpy(l2_start, buf, matrix->n * sizeof(*l2_start));
-}
-
-void
-matrix_swap_columns(Matrix *matrix, int column1, int column2)
-{
-    int m = matrix->m;
-    int n = matrix->n;
-    for (int i = 0; i < m; ++i) {
-        // swap arr[i][column1] and arr[i][column2]
-        double temp = matrix->arr[i * n + column1];
-        matrix->arr[i * n + column1] = matrix->arr[i * n + column2];
-        matrix->arr[i * n + column2] = temp;
-    }
-}
-
-void
-matrix_subtract_line(Matrix *matrix, int line1, int line2, double k)
-{
-    int n = matrix->n;
-    for (int j = 0; j < n; ++j) {
-        matrix->arr[line1 * n + j] -= k * matrix->arr[line2 * n + j];
     }
 }
 

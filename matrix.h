@@ -1,3 +1,6 @@
+#ifndef MATRIX_H
+#define MATRIX_H
+
 #include <stdio.h>
 
 typedef struct Matrix
@@ -7,6 +10,11 @@ typedef struct Matrix
     int n; // number of columns
     double det;
 } Matrix;
+
+enum MatrixConstants
+{
+    BUF_INIT_SIZE = 16
+};
 
 extern double *buf;
 // A buffer for certain operations on matrices
@@ -34,18 +42,10 @@ matrix_print_file(const Matrix *matrix, FILE *file);
 // Prints the matrix into file
 
 void
-matrix_swap_lines(Matrix *matrix, int line1, int line2);
-
-void
-matrix_swap_columns(Matrix *matrix, int column1, int column2);
-
-void
-matrix_subtract_line(Matrix *matrix, int line1, int line2, double k);
-// susbstracts line2 * k from line1
-
-void
 matrix_destroy(Matrix *matrix);
 // Free matrix memory
 
 void
 matlib_exit(void);
+
+#endif
