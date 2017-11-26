@@ -20,3 +20,8 @@ matrix_gauss.c: matrix_gauss.h
 
 cleanup:
 	rm -f $(OBJ) $(TARGET)
+
+
+# Auxillary
+tmaker: tmaker.c matrix.c
+	gcc -g -std=gnu11 -Wall -Wextra $^ -lm -o $@

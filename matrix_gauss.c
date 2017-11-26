@@ -49,7 +49,7 @@ matrix_multiply_line(Matrix *matrix, int line, double k, int first_nz, int flag)
     }
 }
 
-void
+int
 matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns)
 {
     // Perfrom some initialization
@@ -93,14 +93,20 @@ matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns)
                     columns[it] = columns[max_ind];
                     columns[max_ind] = tmp;
                 }
+            } else if (mat[it * n + it] == 0.0) {
+                matrix->det = 0.0;
+                return 0;
             }
-                
         } else {
             // Search for the first non-zero element in the current column
             int nz_ind;
             for (nz_ind = it;
                     nz_ind < m && mat[nz_ind * n + it] == 0.0;
                     ++nz_ind);
+            if (nz_ind == m) {
+                matrix->det = 0.0;
+                return 0;
+            }
             // Swap that line with the current one
             matrix_swap_lines(matrix, it, nz_ind);
             if (flags & GF_CALC_INVERSE) {
@@ -136,7 +142,7 @@ matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns)
     // if we only need to calculated det (with maybe MAIN_SEARCH flag
     if ((flags | GF_MAIN_SEARCH) == (GF_CALC_DET | GF_MAIN_SEARCH)) {
         // Then exit, job is done
-        return;
+        return 1;
     }
 
     // Reverse
@@ -155,4 +161,5 @@ matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns)
             mat[i * n + it] = 0.0;
         }
     }
+    return 1;
 }

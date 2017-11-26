@@ -26,11 +26,14 @@ matrix_multiply_line(Matrix *matrix, int line, double k, int first_nz, int flag)
 // Multiplies line in matrix by k; first_nz is the index of
 // the first non-zero element; flag is whether to modify matrix->det
 
-void
+int
 matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns);
 // Performs Gaussian method on matrix
 // For notes of flags see "enum GaussFlags"
 // inv_matrix is where the resulting inverse matrix is stored (if requested)
 // columns is the array where the column swaps are stored (if requested)
+// If the matrix turns out to be non-singular, the function returns 0
+// and matrix, inv_matrix and columns are left in an undefined state
+// Otherwise, the matrix is singular and the function returns 1
 
 #endif
