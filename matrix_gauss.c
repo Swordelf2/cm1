@@ -116,25 +116,27 @@ matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns)
         }
 
         // Divide this line by the main element
+        double mul_val = 1.0 / mat[it * n + it];
         matrix_multiply_line(matrix,
                 it,
-                1.0 / mat[it * n + it],
+                mul_val,
                 it,
                 flags & GF_CALC_DET);
         if (flags & GF_CALC_INVERSE) {
             // Same for the inverse matrix
             matrix_multiply_line(inv_matrix,
                     it,
-                    1.0 / mat[it * n + it],
-                    it,
+                    mul_val,
+                    0,
                     0);
         }
         // Now substract this line from all those beneath it
         for (int i = it + 1; i < m; ++i) {
-            matrix_substract_line(matrix, i, it, mat[i * n + it]);
+            double mul_val = mat[i * n + it];
+            matrix_substract_line(matrix, i, it, mul_val);
             if (flags & GF_CALC_INVERSE) {
                 // Same for the inverse matrix
-                matrix_substract_line(inv_matrix, i, it, mat[i * n + it]);
+                matrix_substract_line(inv_matrix, i, it, mul_val);
             }
         }
     }

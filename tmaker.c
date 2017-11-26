@@ -67,9 +67,11 @@ main(int argc, char *argv[])
     FILE *f = fopen("t/gen", "w+");
     fprintf(f, "%d\n", m);
     matrix_print_file(&matrix, f);
-    fprintf(f, "\nSolution:\n");
-    for (int i = 0; i < m; ++i) {
-        fprintf(f, "x%d = %.10g\n", i + 1, x[i]);
+    if (*argv[1] == '1') {
+        fprintf(f, "\nSolution:\n");
+        for (int i = 0; i < m; ++i) {
+            fprintf(f, "x%d = %.10g\n", i + 1, x[i]);
+        }
     }
 
     fclose(f);
