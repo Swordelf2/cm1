@@ -35,5 +35,6 @@ matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns);
 // If the matrix turns out to be non-singular, the function returns 0
 // and matrix, inv_matrix and columns are left in an undefined state
 // Otherwise, the matrix is singular and the function returns 1
+// GF_CALC_INVERSE and GF_MAIN_SEARCH cannot be used simultaneously
 
 #endif

@@ -52,6 +52,9 @@ matrix_multiply_line(Matrix *matrix, int line, double k, int first_nz, int flag)
 int
 matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns)
 {
+    if ((flags & GF_CALC_INVERSE) && (flags & GF_MAIN_SEARCH)) {
+        return 0;
+    }
     // Perfrom some initialization
     int m = matrix->m;
     int n = matrix->n;
