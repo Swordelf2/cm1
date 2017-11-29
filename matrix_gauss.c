@@ -151,12 +151,12 @@ matrix_gauss(Matrix *matrix, int flags, Matrix *inv_matrix, int *columns)
     }
 
     // Reverse
-    // if (n > m) means that if the matrix is extended we peform the substraction
-    // of the extended part
     for (int it = m - 1; it > 0; --it) {
         double ext_val = mat[it * n + m];
         // Substract this line from all above it
         for (int i = it - 1; i >= 0; --i) {
+            // if (n > m) means that if the matrix is extended we peform the substraction
+            // of the extended part
             if (n > m) {
                 mat[i * n + m] -= mat[i * n + it] * ext_val;
             }

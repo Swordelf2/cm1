@@ -44,7 +44,7 @@ matrix_print_file(const Matrix *matrix, FILE *file)
     int n = matrix->n;
     for (int i = 0; i < m; ++i) {
         for (int j = 0; j < n; ++j) {
-            fprintf(file, "%10.5g ", matrix->arr[i * n + j]);
+            fprintf(file, "%12.5g ", matrix->arr[i * n + j]);
         }
         putc('\n', file);
     }
