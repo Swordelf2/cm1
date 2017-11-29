@@ -5,6 +5,7 @@
 
 #include "matrix.h"
 
+
 int
 main(int argc, char *argv[])
 {
@@ -17,6 +18,7 @@ main(int argc, char *argv[])
         printf("### First argument:\n"
                 "0 for square matrix\n"
                 "1 for extended\n"
+                "2 for extended and positive\n"
                 "### Second argument (not required):\n"
                 "Number of lines/columns\n"
                 "### Third argument  (not required):\n"
@@ -42,7 +44,6 @@ main(int argc, char *argv[])
     for (int i = 0; i < m; ++i) {
         x[i] = (int) (rand() / (RAND_MAX + 1.0) * 10.0) - 5.0;
     }
-
     if (*argv[1] == '0') {
         n = m;
     } else {
@@ -64,10 +65,34 @@ main(int argc, char *argv[])
         }
     }
 
+    if (*argv[1] == '2') { // positive matrix
+        // Multiply by self trasnsponse
+        Matrix old;
+        memcpy(&old, &matrix, sizeof(old));
+        matrix_init(&matrix, m, n);
+        for (int i = 0; i < m; ++i) {
+            for (int j = i; j < m; ++j) {
+                double sum = 0.0;
+                for (int s = 0; s < m; ++s) {
+                    sum += old.arr[i * n + s] * old.arr[j * n + s];
+                }
+                matrix.arr[i * n + j] = matrix.arr[j * n + i] = sum;
+            }
+        }
+        matrix_destroy(&old);
+        for (int i = 0; i < m; ++i) {
+            double sum = 0;
+            for (int j = 0; j < m; ++j) {
+                sum += matrix.arr[i * n + j] * x[j];
+            }
+            matrix.arr[i * n + m] = sum;
+        }
+    }
+
     FILE *f = fopen("t/gen", "w+");
     fprintf(f, "%d\n", m);
     matrix_print_file(&matrix, f);
-    if (*argv[1] == '1') {
+    if (*argv[1] == '1' || *argv[1] == '2') {
         fprintf(f, "\nSolution:\n");
         for (int i = 0; i < m; ++i) {
             fprintf(f, "x%d = %.10g\n", i + 1, x[i]);

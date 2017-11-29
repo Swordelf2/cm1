@@ -86,6 +86,7 @@ matrix_uprel(Matrix *matrix, double w, double eps, double *solution, int *itr)
             success_flag = 1;
             break;
         }
+        memcpy(x_prev, x_cur, m * sizeof(*x_prev));
     }
         
     if (success_flag) {
